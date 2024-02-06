@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
@@ -18,7 +19,7 @@ class UserFactory extends Factory
             'name' => "Admin",
             'email' => "admin@gmail.com",
             'email_verified_at' => now(),
-            'password' => 'admin', // password
+            'password' => encrypt('admin'), // password
             'role' => 3,
             'remember_token' => Str::random(10),
         ];

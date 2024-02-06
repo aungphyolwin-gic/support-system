@@ -6,7 +6,7 @@
             <div class="col-md-10">
                 <div class="card mt-3 shadow">
                     <div class="card-header bg-gray text-center">
-                        <h3 class="fst-italic">User List</h3>
+                        <h3 class="fst-italic">Label List</h3>
                     </div>
 
                     <div class="card-body ">
@@ -46,9 +46,6 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Password</th>
-                                    <th scope="col">Account Type</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -56,28 +53,19 @@
                                 @php
                                     $number = 1;
                                 @endphp
-                                @foreach ($users as $user)
+                                @foreach ($labels as $label)
                                     <tr>
                                         <th scope="row">{{ $number++ }}</th>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ decrypt($user->password) }}</td>
-                                        @if ($user->role == 0)
-                                            <td> Regular </td>
-                                        @elseif ($user->role == 1)
-                                            <td> Agent </td>
-                                        @else
-                                            <td> Admin </td>
-                                        @endif
+                                        <td>{{ $label->name }}</td>
 
                                         <td>
                                             <div class="d-inline">
-                                                <a href="{{ route('user.edit', $user->id) }}"
+                                                <a href="{{ route('label.edit', $label->id) }}"
                                                     class="btn btn-outline-warning "><i class="fa fa-pen"></i></a>
-                                                {{-- <a href="{{ route('user.show',$user->id) }}" class="btn btn-outline-info "><i class="fa fa-info"></i></a> --}}
+                                                {{-- <a href="{{ route('label.show',$label->id) }}" class="btn btn-outline-info "><i class="fa fa-info"></i></a> --}}
                                             </div>
 
-                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                            <form action="{{ route('label.destroy', $label->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')

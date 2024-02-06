@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -37,13 +38,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $validateData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'con_email' => 'required|email|same:email',
+            'password' => 'required',
+            'role' => 'required'
+        ]);
         // return $request;
 
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->email_verified_at = now();
-        $user->password = $request->password;
+        $user->password = encrypt($request->password);
         $user->role = $request->role;
         $user->save();
         return redirect()->route('user.index')->with('create','user created successfully.');
@@ -82,12 +90,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validateData = $request->validate([
+            'name' => 'filled',
+            'email' => 'filled|email',
+            'password' => 'filled',
+            'role' => 'filled'
+        ]);
         // return $request;
         $user = User::find($id);
         if ($user){
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = $request->password;
+            $user->password = encrypt($request->password);
             $user->role = $request->role;
             $user->update();
             // return "update success";

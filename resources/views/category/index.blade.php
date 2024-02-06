@@ -6,11 +6,12 @@
             <div class="col-md-10">
                 <div class="card mt-3 shadow">
                     <div class="card-header bg-gray text-center">
-                        <h3 class="fst-italic">User List</h3>
+                        <h3 class="fst-italic">Category List</h3>
                     </div>
 
                     <div class="card-body ">
 
+                        {{-- notification message --}}
                         @if (session('create'))
                             <div class="alert alert-success  alert-dismissible  " role="alert">
                                 <i class="fas fa-check-circle"> </i>
@@ -41,14 +42,12 @@
                             </div>
                         @endif
 
+                        {{-- data table of category list  --}}
                         <table class="table table-striped">
                             <thead class="table-dark">
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Password</th>
-                                    <th scope="col">Account Type</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -56,28 +55,19 @@
                                 @php
                                     $number = 1;
                                 @endphp
-                                @foreach ($users as $user)
+                                @foreach ($categories as $category)
                                     <tr>
                                         <th scope="row">{{ $number++ }}</th>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ decrypt($user->password) }}</td>
-                                        @if ($user->role == 0)
-                                            <td> Regular </td>
-                                        @elseif ($user->role == 1)
-                                            <td> Agent </td>
-                                        @else
-                                            <td> Admin </td>
-                                        @endif
+                                        <td>{{ $category->name }}</td>
 
                                         <td>
                                             <div class="d-inline">
-                                                <a href="{{ route('user.edit', $user->id) }}"
+                                                <a href="{{ route('category.edit', $category->id) }}"
                                                     class="btn btn-outline-warning "><i class="fa fa-pen"></i></a>
-                                                {{-- <a href="{{ route('user.show',$user->id) }}" class="btn btn-outline-info "><i class="fa fa-info"></i></a> --}}
+                                                {{-- <a href="{{ route('category.show',$category->id) }}" class="btn btn-outline-info "><i class="fa fa-info"></i></a> --}}
                                             </div>
 
-                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                            <form action="{{ route('category.destroy', $category->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')

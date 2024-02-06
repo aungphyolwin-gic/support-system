@@ -72,7 +72,7 @@
           <img src={{ asset("dist/img/user2-160x160.jpg")}} class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">User Name</a>
+          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -95,7 +95,27 @@
                with font-awesome or any other icon font library -->
 
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('user.create') }}" class="nav-link">
+                    <i class="nav-icon fas fa-plus">   </i>
+                    Add new User
+                </a>
+                {{-- <span class="right badge badge-danger">New</span> --}}
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('user.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Users List
+                    </p>
+                </a>
+            </li>
+
+            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+
+            {{-- category menu  --}}
+            <li class="nav-item">
+                <a href="{{ route('category.create') }}" class="nav-link">
                     <i class="nav-icon fas fa-plus">   </i>
                     Add new Category
                 </a>
@@ -103,7 +123,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('category.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Categories List
@@ -112,22 +132,27 @@
             </li>
 
             <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+
+            {{-- label menu  --}}
             <li class="nav-item">
-                <a href="" class="nav-link">
-                    <i class="nav-icon fas fa-plus"></i>
-                    Add a new Item
+                <a href="{{ route('label.create') }}" class="nav-link">
+                    <i class="nav-icon fas fa-plus">   </i>
+                    Add new label
                 </a>
                 {{-- <span class="right badge badge-danger">New</span> --}}
             </li>
 
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('label.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
-                        Item List
+                        Labels List
                     </p>
                 </a>
             </li>
+
+            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+
 
         </ul>
       </nav>
