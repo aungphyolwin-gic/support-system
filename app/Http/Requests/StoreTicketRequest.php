@@ -13,7 +13,7 @@ class StoreTicketRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,8 +26,8 @@ class StoreTicketRequest extends FormRequest
         return [
             'title' => 'required',
             'message' => 'required',
-            'label' => 'required|unique:labels,name',
-            'category' => 'required|unique:categories,name',
+            'label_id' => 'required|exists:labels,id',
+            'category_id' => 'required|exists:categories,id',
             'priority' => 'required',
             'file'  => 'nullable'
         ];

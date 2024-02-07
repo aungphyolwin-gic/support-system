@@ -1,92 +1,120 @@
 @extends('dashboard.index')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card  mt-3 shadow">
-                <div class="card-header bg-gray text-left">
-                    <h3>Add User</h3>
-                </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card  mt-3 shadow">
+                    <div class="card-header bg-gray text-left">
+                        <h3>Report Ticket</h3>
+                    </div>
 
-                <div class="card-body">
-                    {{-- Input Form for user data --}}
-                    <form method="POST" action="{{ route('user.store') }}" >
-                        @csrf
-
-                        {{-- User Name Field --}}
-                        <div class="form-group m-3 row">
-                            <label for="name" class="col-sm-6 col-form-label">Name <small class="text-danger">*</small></label>
-                            <div class="col-sm-6">
-                              <input type="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
-                              @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                              @enderror
+                    <div class="card-body">
+                        {{-- Input Form for ticket data --}}
+                        <form method="POST" action="{{ route('ticket.store') }}" enctype="multipart/form-data">
+                            @csrf
+                            {{-- ticket Title Field --}}
+                            <div class="form-group m-3 ">
+                                <label for="title" class="form-label">Title <small
+                                        class="text-danger">*</small></label>
+                                <div class="">
+                                    <input type="title" name="title"
+                                        class="form-control @error('title') is-invalid @enderror"
+                                        value="{{ old('title') }}">
+                                    @error('title')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                          </div>
 
-                          {{-- Email Field --}}
-                          <div class="form-group m-3 row">
-                            <label for="email" class="col-sm-6 col-form-label">Email <small class="text-danger">*</small></label>
-                            <div class="col-sm-6">
-                              <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
-                              @error('email')
-                                <div class="text-danger">{{ $message }}</div>
-                              @enderror
+                            {{-- Message Field --}}
+                            <div class="form-group m-3">
+                                <label for="message" class="form-label">Message
+                                    <small class="text-danger">*</small>
+                                </label>
+                                <div class="">
+                                    <textarea type="message" name="message" class="form-control @error('message') is-invalid @enderror"
+                                       " rows="3">{{ old('message') }}
+                                    </textarea>
+                                    @error('message')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                          </div>
 
-                          {{--Confirm Email Field --}}
-                          <div class="form-group m-3 row">
-                            <label for="con_email" class="col-sm-6 col-form-label">Confirm Email <small class="text-danger">*</small></label>
-                            <div class="col-sm-6">
-                              <input type="email" name="con_email" class="form-control @error('con_email') is-invalid @enderror" value="{{ old('con_email') }}">
-                              @error('con_email')
-                                <div class="text-danger">{{ $message }}</div>
-                              @enderror
+                            {{-- Label checkbox Field --}}
+                            <div class="form-group m-3">
+                                <label for="label_id" class="form-label">Label</label>
+                                <div>
+                                    @foreach ($labels as $label)
+                                        <div class="form-check form-check-inline  @error('label') is-invalid @enderror">
+                                            <input type="checkbox" class="form-check-input" name="label_id" value="{{ $label->id }}">
+                                            <label class="form-check-label" for="label">{{ $label->name }}</label>
+                                        </div>
+                                    @endforeach
+                                    @error('label_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                          </div>
 
-                          {{-- Password Field --}}
-                          <div class="form-group m-3 row">
-                            <label for="password" class="col-sm-6 col-form-label">Password <small class="text-danger">*</small></label>
-                            <div class="col-sm-6">
-                              <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}">
-                              @error('password')
-                                <div class="text-danger">{{ $message }}</div>
-                              @enderror
+                            {{-- Category checkbox Field --}}
+                            <div class="form-group m-3">
+                                <label for="category_id" class="form-label">Category</label>
+                                <div>
+                                    @foreach ($categories as $category)
+                                        <div class="form-check form-check-inline  @error('category') is-invalid @enderror">
+                                            <input type="checkbox" class="form-check-input" name="category_id" value="{{ $category->id }}">
+                                            <label class="form-check-label" for="category">{{ $category->name }}</label>
+                                        </div>
+                                    @endforeach
+                                    @error('category_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                          </div>
 
-                          {{-- User Role [0 : normal user, 1 : agent, *2: admin] --}}
-                          <div class="form-group m-3 row">
-                            <label for="role" class="col-sm-6 col-form-label">User Type <small class="text-danger">*</small></label>
-                            <div class="col-sm-6 dropdown">
-                                <select name="role" class="form-control @error('role') is-invalid @enderror" >
-                                    <option value="" @selected(true)>Category Types</option>
-                                    <option value=0 >Regular User</option>
-                                    <option value=1 >Agent User</option>
-                                </select>
-                                @error('role')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                            {{-- Priority --}}
+                            <div class="form-group m-3 ">
+                                <label for="priority" class="form-label">Priority<small
+                                        class="text-danger">*</small></label>
+                                <div class="dropdown">
+                                    <select name="priority" class="form-control @error('priority') is-invalid @enderror">
+                                        <option value="" @selected(true)>Choose Priority</option>
+                                        <option value="low">Low</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                    @error('priority')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                          </div>
 
-
-                          <div class="form-group m-3 row">
-                            <div class="mx-auto">
-                              <a href="{{ route('user.index') }}" class="btn btn-outline-dark">
-                                <i class="far fa-arrow-alt-circle-left fa-lg"></i>
-                              </a>
-                              <button type="submit" class="btn btn-outline-primary">Add</button>
+                            {{-- file upload --}}
+                            <div class="form-group m-3">
+                                <div class="">
+                                    <label for="file" class=" form-label">Upload file</label>
+                                    <input class=" form-control-file" type="file" name="file" multiple>
+                                  </div>
                             </div>
-                          </div>
 
-                    </form>
+                            <div class="form-group m-3 row">
+                                <div class="mx-auto">
+                                  <a href="{{ route('ticket.index') }}" class="btn btn-outline-dark">
+                                    <i class="far fa-arrow-alt-circle-left fa-lg"></i>
+                                  </a>
+                                  <button type="submit" class="btn btn-outline-primary">Send</button>
+                                </div>
+                              </div>
+
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+
+
 @endsection

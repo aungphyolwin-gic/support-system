@@ -17,10 +17,12 @@ class CreateTicketsTable extends Migration
             $table->id();
             $table->string('title');
             $table->longtext('message');
-            $table->foreign('label_id')->references('id')->on('labels')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('label_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('priority');
             $table->string('file')->nullable();
+            $table->foreign('label_id')->references('id')->on('labels')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\Label;
+use App\Models\Category;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 
@@ -15,8 +17,9 @@ class TicketController extends Controller
      */
     public function index()
     {
+        // return "hello";
         $tickets = Ticket::all();
-        return redirect()->route('ticket.index', compact('tickets'));
+        return view('ticket.index', compact('tickets'));
     }
 
     /**
@@ -26,7 +29,9 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return redirect()->route('ticket.create');
+        $labels = Label::all();
+        $categories = Category::all();
+        return view('ticket.create', compact(['labels','categories']));
     }
 
     /**
@@ -37,14 +42,22 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request)
     {
-        return $request;
+        // return $request;
+        $fileName = 'default';
+        if($request->hasFile('file')){
+            $file = $request->file;
+            $fileName = 'report_'.uniqid().'.'.$file->extension();
+            // return $fileName;
+            $file->storeAs('public/upload_file',$fileName);
+        }
+
         $ticket = new Ticket();
         $ticket->title = $request->title;
         $ticket->message = $request->message;
         $ticket->label_id = $request->label_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority = $request->priority;
-        $ticket->file = $request->file;
+        $ticket->file = $fileName;
         $ticket->save();
 
         return redirect()->route('ticket.index')->with("create","Ticket created successfully.");
@@ -83,12 +96,22 @@ class TicketController extends Controller
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
         return $request;
+        $fileName = $ticket->file;
+        if($request->hasFile('file')){
+            if(Storage::exists($fileName)){
+                Storage::delete($fileName);
+            }
+            $file = $request->file;
+            $fileName = 'report_'.uniqid().'.'.$file->extension();
+            return $fileName;
+            $file->storeAs('public/upload_file',$fileName);
+        }
         $ticket->title = $request->title;
         $ticket->message = $request->message;
         $ticket->label_id = $request->label_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority = $request->priority;
-        $ticket->file = $request->file;
+        $ticket->file =$fileName;
         $ticket->update();
         return redirect()->route('ticket.index')->with("update","Ticket data updated.");
     }
@@ -101,10 +124,15 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        if($ticket){
+        if($ticket->file){
+            return "hello delete";
+            if(Storage::exists($ticket->file)){
+                Storage::delete($ticket->file);
+            }
             $ticket->delete();
             return redirect()->route('ticket.index')->with("delete","Ticket deleted successfully.");
         }
+
         return redirect()->route('ticket.index')->with("delete","Ticket delete failed.");
     }
 }

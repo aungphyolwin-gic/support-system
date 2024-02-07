@@ -6,12 +6,12 @@
             <div class="col-md-10">
                 <div class="card mt-3 shadow">
                     <div class="card-header bg-gray text-center">
-                        <h3 class="fst-italic">User List</h3>
+                        <h3 class="fst-italic">Tickets</h3>
                     </div>
 
                     <div class="card-body ">
 
-                        @if (session('create'))
+                        {{-- @if (session('create'))
                             <div class="alert alert-success  alert-dismissible  " role="alert">
                                 <i class="fas fa-check-circle"> </i>
                                 {{ session('create') }}
@@ -39,56 +39,51 @@
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
-                        @endif
+                        @endif --}}
 
-                        <table class="table table-striped">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Password</th>
-                                    <th scope="col">Account Type</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $number = 1;
-                                @endphp
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <th scope="row">{{ $number++ }}</th>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ decrypt($user->password) }}</td>
-                                        @if ($user->role == 0)
-                                            <td> Regular </td>
-                                        @elseif ($user->role == 1)
-                                            <td> Agent </td>
-                                        @else
-                                            <td> Admin </td>
-                                        @endif
+                        @foreach ($tickets as $ticket)
+                            {{-- Data cards --}}
+                            <div class="card mb-3 shadow">
+                                <div class="card-header text-center text-monospace text-bold text-uppercase">
+                                    <h5 class="d-inline">Title : {{ $ticket->title }}</h5>
 
-                                        <td>
-                                            <div class="d-inline">
-                                                <a href="{{ route('user.edit', $user->id) }}"
-                                                    class="btn btn-outline-warning "><i class="fa fa-pen"></i></a>
-                                                {{-- <a href="{{ route('user.show',$user->id) }}" class="btn btn-outline-info "><i class="fa fa-info"></i></a> --}}
+                                    <div class=" d-inline float-right">
+                                        {{-- menu  --}}
+                                        <div class="dropdown dropleft">
+                                            <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="{{ route('ticket.edit', $ticket->id) }}">Edit</a>
+                                            <a class="dropdown-item" href="#">Case</a>
+                                            <a class="dropdown-item" href="{{ route('ticket.destroy',$ticket->id) }}">Delete</a>
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger"><i class="fa fa-trash"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                </div>
 
-                            </tbody>
-                        </table>
+                                {{-- card data  --}}
+                                <div class="card-body">
+                                    <p class="border-1 text-start">{{ $ticket->message }}</p>
+                                    <div class="row justify-content-around">
+                                        <span class="mr-3 text-bold">Label</span> <span class= "justify-content-center">:</span>
+                                        <span class="">{{ $ticket->label->name?? "none" }} </span>
+                                    </div>
+                                    <div class="row justify-content-around">
+                                        <span class="mr-3 text-bold">Category</span> <span class= "justify-content-center">:</span>
+                                        <span class="">{{ $ticket->category->name }} </span>
+                                    </div>
+                                    <div class="row justify-content-around mb-3">
+                                        <span class="mr-3 text-bold ">Priority</span> <span class= "justify-content-center">:</span>
+                                        <span class="">{{ $ticket->priority }}</span>
+                                    </div>
+                                    <div>
+                                        <iframe src="{{ asset('storage/upload_file/'.$ticket->file) }}" frameborder="0" height="200px" width="100%"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
 
                     </div>
                 </div>
