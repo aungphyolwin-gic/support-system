@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
@@ -57,8 +58,10 @@ class TicketController extends Controller
         $ticket->message = $request->message;
         $ticket->label_id = $request->label_id;
         $ticket->category_id = $request->category_id;
+        $ticket->user_id = Auth::user()->id;
         $ticket->priority = $request->priority;
         $ticket->file = $fileName;
+        // return $ticket;
         $ticket->save();
 
         return redirect()->route('ticket.index')->with("create","Ticket created successfully.");
@@ -72,7 +75,9 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        $comments = $ticket->comment;
+        return $comments;
+        return view('ticket.show', compact(['ticket','comments']));
     }
 
     /**

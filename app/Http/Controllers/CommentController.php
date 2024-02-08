@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -11,9 +13,11 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($ticket_id)
     {
-        //
+        // $ticket = Ticket::find($ticket_id);
+        // $comments = $ticket->comment;
+        // return $comments;
     }
 
     /**
@@ -34,7 +38,17 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // return $request;
+        $request->validate([
+            'content'=>'required'
+        ]);
+        $comment = new Comment();
+        $comment->user_id = Auth::user()->id;
+        $comment->ticket_id = $request->ticket_id;
+        $comment->content = $request->content;
+        $comment->save();
+        return redirect()->route('ticket.show',$request->ticket_id)->with('comment','comment posted.'); //might need it of ticket to be fix
     }
 
     /**
@@ -45,7 +59,7 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        return "show comment";
     }
 
     /**
@@ -68,7 +82,11 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $request;
+        $comment = Comment::find($id);
+        $comment->content = $request->content;
+        $comment->update();
+        return redirect()->route('ticket.show');
     }
 
     /**

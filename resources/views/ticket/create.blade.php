@@ -34,7 +34,7 @@
                                 </label>
                                 <div class="">
                                     <textarea type="message" name="message" class="form-control @error('message') is-invalid @enderror"
-                                       " rows="3">{{ old('message') }}
+                                    rows="3">{{ old('message') }}
                                     </textarea>
                                     @error('message')
                                         <div class="text-danger">{{ $message }}</div>

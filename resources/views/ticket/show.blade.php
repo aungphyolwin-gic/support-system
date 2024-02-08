@@ -6,7 +6,7 @@
             <div class="col-md-10">
                 <div class="card mt-3 shadow">
                     <div class="card-header bg-gray text-center">
-                        <h3 class="fst-italic">Tickets</h3>
+                        <h3 class="fst-italic">{{ $ticket->user->name }}</h3>
                     </div>
 
                     <div class="card-body ">
@@ -41,9 +41,9 @@
                             </div>
                         @endif --}}
 
-                        @foreach ($tickets as $ticket)
+
                             {{-- Data cards --}}
-                            <div class="card mb-3 shadow">
+                            <div class="card mb-3">
                                 <div class="card-header text-center text-monospace text-bold text-uppercase">
                                     <h5 class="d-inline">Title : {{ $ticket->title }}</h5>
 
@@ -55,7 +55,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="{{ route('ticket.edit', $ticket->id) }}"><i class="fa fa-pen"></i>Edit</a>
-                                                <a class="dropdown-item" href="{{ route('ticket.show', $ticket->id) }}">Comment</a>
+                                                <a class="dropdown-item" href="#">Case</a>
                                                 <form action="{{ route('ticket.destroy',$ticket->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -70,28 +70,45 @@
                                 {{-- card data  --}}
                                 <div class="card-body">
                                     <p class="border-1 text-start">{{ $ticket->message }}</p>
-                                    <div class="row justify-content-around">
-                                        <span class="mr-3 text-bold">Label</span> <span class= "justify-content-center">:</span>
-                                        <span class="">{{ $ticket->label->name?? "none" }} </span>
+                                    <div class="row justify-content-start border-1">
+                                        <div class= "col-md-2 text-bold">Label</div>
+                                        <div class= "col-md-1 justify-content-center">:</div>
+                                        <div class= "col-md-3 ">{{ $ticket->label->name?? "none" }} </div>
                                     </div>
-                                    <div class="row justify-content-around">
-                                        <span class="mr-3 text-bold">Category</span> <span class= "justify-content-center">:</span>
-                                        <span class="">{{ $ticket->category->name }} </span>
+                                    <div class="row justify-content-start border-1">
+                                        <div class= "col-md-2 text-bold">Category  </div>
+                                        <div class= "col-md-1 justify-content-center">:</div>
+                                        <div class= "col-md-3 text-start">{{ $ticket->category->name }} </div>
                                     </div>
-                                    <div class="row justify-content-around mb-3">
-                                        <span class="mr-3 text-bold ">Priority</span> <span class= "justify-content-center">:</span>
-                                        <span class="">{{ $ticket->priority }}</span>
+                                    <div class="row justify-content-start border-1 mb-3">
+                                        <div class= "col-md-2 text-bold ">Priority</div>
+                                        <div class= "col-md-1 justify-content-center">:</div>
+                                        <div class= "col-md-3 text-start">{{ $ticket->priority }}</div>
                                     </div>
-                                    <div>
-                                        <iframe src="{{ asset('storage/upload_file/'.$ticket->file) }}" frameborder="0" height="200px" width="100%"></iframe>
+                                    {{-- <div class="embed-responsive embed-responsive-16by9"> --}}<div>
+                                        <iframe src="{{ asset('storage/upload_file/'.$ticket->file) }}" frameborder="0" class="embed-responsive-item"></iframe>
                                     </div>
                                 </div>
+
+                                {{-- card footer as comment session --}}
+                                <div class="card-footer text-muted justify-content-between row">
+                                    <div class="">post a comment</div>
+                                    <div class="">
+                                        {{-- <a href="{{ route('comment.index') }}">Comments</a> --}}
+                                    </div>
+                                </div>
+
                             </div>
-                        @endforeach
+
+                            @include('comment.index',['ticket_id'=>$ticket->id])
 
                     </div>
                 </div>
             </div>
+
         </div>
+
+        @include('comment.create',['ticket_id'=>$ticket->id])
     </div>
+
 @endsection

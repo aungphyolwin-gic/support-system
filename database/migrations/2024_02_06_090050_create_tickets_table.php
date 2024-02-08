@@ -19,10 +19,12 @@ class CreateTicketsTable extends Migration
             $table->longtext('message');
             $table->unsignedBigInteger('label_id');
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('priority');
             $table->string('file')->nullable();
             $table->foreign('label_id')->references('id')->on('labels')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
