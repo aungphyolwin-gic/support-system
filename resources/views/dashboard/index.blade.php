@@ -153,6 +153,26 @@
 
             <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
 
+            {{-- ticket menu  --}}
+            <li class="nav-item">
+                <a href="{{ route('ticket.create') }}" class="nav-link">
+                    <i class="nav-icon fas fa-plus">   </i>
+                    Add new Ticket
+                </a>
+                {{-- <span class="right badge badge-danger">New</span> --}}
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('ticket.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Tickets List
+                    </p>
+                </a>
+            </li>
+
+            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+
 
         </ul>
       </nav>

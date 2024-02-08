@@ -54,9 +54,13 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="{{ route('ticket.edit', $ticket->id) }}">Edit</a>
-                                            <a class="dropdown-item" href="#">Case</a>
-                                            <a class="dropdown-item" href="{{ route('ticket.destroy',$ticket->id) }}">Delete</a>
+                                                <a class="dropdown-item" href="{{ route('ticket.edit', $ticket->id) }}"><i class="fa fa-pen"></i>Edit</a>
+                                                <a class="dropdown-item" href="#">Case</a>
+                                                <form action="{{ route('ticket.destroy',$ticket->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="dropdown-item"><i class="fa fa-trash me-3"></i>Delete</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

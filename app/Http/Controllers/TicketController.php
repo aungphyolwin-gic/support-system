@@ -7,6 +7,7 @@ use App\Models\Label;
 use App\Models\Category;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -82,8 +83,10 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        return $ticket;
-        return view('ticket.edit',compact('ticket'));
+        // return $ticket;
+        $labels = Label::all();
+        $categories = Category::all();
+        return view('ticket.edit',compact(['ticket','labels','categories']));
     }
 
     /**
@@ -95,15 +98,15 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        return $request;
+        // return $request;
         $fileName = $ticket->file;
         if($request->hasFile('file')){
-            if(Storage::exists($fileName)){
-                Storage::delete($fileName);
+            if(Storage::exists('public/upload_file/'.$ticket->file)){
+                Storage::delete('public/upload_file/'.$ticket->file);
             }
             $file = $request->file;
             $fileName = 'report_'.uniqid().'.'.$file->extension();
-            return $fileName;
+            // return $fileName;
             $file->storeAs('public/upload_file',$fileName);
         }
         $ticket->title = $request->title;
@@ -125,14 +128,16 @@ class TicketController extends Controller
     public function destroy(Ticket $ticket)
     {
         if($ticket->file){
-            return "hello delete";
-            if(Storage::exists($ticket->file)){
-                Storage::delete($ticket->file);
+            // return "hello delete";
+            // dd( 'public/upload_file/ '.$ticket->file);
+            if(Storage::exists('public/upload_file/'.$ticket->file)){
+                Storage::delete('public/upload_file/'.$ticket->file);
             }
+
             $ticket->delete();
             return redirect()->route('ticket.index')->with("delete","Ticket deleted successfully.");
         }
-
+        return "there";
         return redirect()->route('ticket.index')->with("delete","Ticket delete failed.");
     }
 }
