@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Ticket;
 use App\Models\Label;
 use App\Models\Category;
@@ -20,7 +21,17 @@ class TicketController extends Controller
     public function index()
     {
         // return "hello";
-        $tickets = Ticket::all();
+        $authorize_uid = Auth::user()->id;
+        if(Auth::user()->role == 2 ){
+            $tickets = Ticket::all();
+        }
+        else if(Auth::user()->role == 1){
+            $tickets = Ticket::where('user_id',$authorize_uid )->orWhere('assigned_id',$authorize_uid)->get();
+        }
+        else{
+            $tickets = Ticket::where('user_id',$authorize_uid)->get();
+        }
+
         return view('ticket.index', compact('tickets'));
     }
 
@@ -76,7 +87,7 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $comments = $ticket->comment;
-        return $comments;
+        // return $comments;
         return view('ticket.show', compact(['ticket','comments']));
     }
 
@@ -91,7 +102,8 @@ class TicketController extends Controller
         // return $ticket;
         $labels = Label::all();
         $categories = Category::all();
-        return view('ticket.edit',compact(['ticket','labels','categories']));
+        $agents = User::where('role','1')->get();
+        return view('ticket.edit',compact(['ticket','labels','categories','agents']));
     }
 
     /**
@@ -119,6 +131,8 @@ class TicketController extends Controller
         $ticket->label_id = $request->label_id;
         $ticket->category_id = $request->category_id;
         $ticket->priority = $request->priority;
+        $ticket->status = $request->status;
+        $ticket->assigned_id = $request->assigned_id;
         $ticket->file =$fileName;
         $ticket->update();
         return redirect()->route('ticket.index')->with("update","Ticket data updated.");

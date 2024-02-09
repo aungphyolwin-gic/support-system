@@ -95,8 +95,12 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($ticket_id,$id)
     {
-        //
+        $comment = Comment::find($id);
+        if($comment){
+            $comment->delete();
+        }
+        return redirect()->route('ticket.show',$ticket_id);
     }
 }

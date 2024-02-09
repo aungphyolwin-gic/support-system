@@ -21,7 +21,7 @@
                                 <div class="">
                                     <input type="title" name="title"
                                         class="form-control @error('title') is-invalid @enderror"
-                                        value="{{ old('title')?? $ticket->title }}">
+                                        value="{{ old('title') ?? $ticket->title }}">
                                     @error('title')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -35,7 +35,7 @@
                                 </label>
                                 <div class="">
                                     <textarea type="message" name="message" class="form-control
-                                    @error('message') is-invalid @enderror" "
+                                    @error('message') is-invalid @enderror"
                                     rows="3">{{ old('message')?? $ticket->message }}
 
                                     </textarea>
@@ -53,12 +53,13 @@
                                         <div class="form-check form-check-inline  @error('label') is-invalid @enderror">
                                             {{-- {{ dd($label->id == $ticket->label_id) }} --}}
                                             <input type="checkbox" class="form-check-input" name="label_id"
-                                                value="{{ $label->id }}" @if ($label->id == $ticket->label_id) checked @endif>
+                                                value="{{ $label->id }}"
+                                                @if ($label->id == $ticket->label_id) checked @endif>
                                             <label class="form-check-label" for="label">{{ $label->name }}</label>
                                         </div>
-                                        @endforeach
+                                    @endforeach
 
-                                        @error('label_id')
+                                    @error('label_id')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -71,7 +72,8 @@
                                     @foreach ($categories as $category)
                                         <div class="form-check form-check-inline  @error('category') is-invalid @enderror">
                                             <input type="checkbox" class="form-check-input" name="category_id"
-                                                value="{{ $category->id }}" @if ($category->id == $ticket->category_id) checked @endif>
+                                                value="{{ $category->id }}"
+                                                @if ($category->id == $ticket->category_id) checked @endif>
                                             <label class="form-check-label" for="category">{{ $category->name }}</label>
                                         </div>
                                     @endforeach
@@ -83,14 +85,18 @@
 
                             {{-- Priority --}}
                             <div class="form-group m-3 ">
+
                                 <label for="priority" class="form-label">Priority<small
                                         class="text-danger">*</small></label>
                                 <div class="dropdown">
                                     <select name="priority" class="form-control @error('priority') is-invalid @enderror">
                                         <option value="">Choose Priority</option>
-                                        <option value="low" @if ($ticket->priority == "low") selected @endif>Low</option>
-                                        <option value="normal" @if ($ticket->priority == "normal") selected @endif>Normal</option>
-                                        <option value="high" @if ($ticket->priority == "high") selected @endif>High</option>
+                                        <option value="low" @if ($ticket->priority == 'low') selected @endif>Low
+                                        </option>
+                                        <option value="normal" @if ($ticket->priority == 'normal') selected @endif>Normal
+                                        </option>
+                                        <option value="high" @if ($ticket->priority == 'high') selected @endif>High
+                                        </option>
                                     </select>
                                     @error('priority')
                                         <div class="text-danger">{{ $message }}</div>
@@ -98,11 +104,53 @@
                                 </div>
                             </div>
 
+                            {{-- status selection --}}
+                            <div class="form-group m-3">
+
+                                <label for="status" class="form-label">Status<small
+                                        class="text-danger">*</small></label>
+                                <div class="dropdown">
+                                    <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                        <option value="">Status</option>
+                                        <option value="open" @if ($ticket->status == 'open') selected @endif>Open
+                                        </option>
+                                        <option value="closed" @if ($ticket->status == 'closed') selected @endif>Closed
+                                        </option>
+                                    </select>
+                                    @error('status')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            {{-- Agent assign selection --}}
+                            <div class="form-group m-3">
+                                <label for="assigned_id" class="form-label">Assign Agent
+                                    <small class="text-danger">*</small></label>
+                                <div class="dropdown">
+                                    <select name="assigned_id" class="form-control @error('assigned_id') is-invalid @enderror">
+                                        <option value="">no agent</option>
+                                        @foreach ($agents as $agent)
+                                            <option value= {{ $agent->id }} @if ($ticket->assigned_id == $agent->id) selected @endif>{{ $agent->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('assigned_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             {{-- file upload --}}
                             <div class="form-group m-3">
+                                <iframe src="{{ asset('storage/upload_file/' . $ticket->file) }}" frameborder="0"
+                                    class="embed-responsive-item"></iframe>
+                            </div>
+
+                            <div class="form-group m-3">
                                 <div class="">
-                                    <label for="file" class=" form-label">Upload file</label>
-                                    <input class=" form-control-file" type="file" name="file" multiple value="{{ old('title')?? $ticket->title }}">
+                                    <label for="file" class=" form-label">Change file</label>
+                                    <input class=" form-control-file" type="file" name="file" multiple
+                                        value="{{ old('title') ?? $ticket->title }}">
                                 </div>
                             </div>
 

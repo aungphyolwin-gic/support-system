@@ -55,7 +55,7 @@
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="{{ route('ticket.edit', $ticket->id) }}"><i class="fa fa-pen"></i>Edit</a>
-                                                <a class="dropdown-item" href="#">Case</a>
+                                                {{-- <a class="dropdown-item" href="#">Case</a> --}}
                                                 <form action="{{ route('ticket.destroy',$ticket->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -80,21 +80,29 @@
                                         <div class= "col-md-1 justify-content-center">:</div>
                                         <div class= "col-md-3 text-start">{{ $ticket->category->name }} </div>
                                     </div>
-                                    <div class="row justify-content-start border-1 mb-3">
+                                    <div class="row justify-content-start border-1">
                                         <div class= "col-md-2 text-bold ">Priority</div>
                                         <div class= "col-md-1 justify-content-center">:</div>
                                         <div class= "col-md-3 text-start">{{ $ticket->priority }}</div>
                                     </div>
-                                    {{-- <div class="embed-responsive embed-responsive-16by9"> --}}<div>
-                                        <iframe src="{{ asset('storage/upload_file/'.$ticket->file) }}" frameborder="0" class="embed-responsive-item"></iframe>
+                                    <div class="row justify-content-start border-1">
+                                        <div class= "col-md-2 text-bold ">Status</div>
+                                        <div class= "col-md-1 justify-content-center">:</div>
+                                        <div class= "col-md-3 text-start">{{ $ticket->status }}</div>
                                     </div>
-                                </div>
-
-                                {{-- card footer as comment session --}}
-                                <div class="card-footer text-muted justify-content-between row">
-                                    <div class="">post a comment</div>
-                                    <div class="">
-                                        {{-- <a href="{{ route('comment.index') }}">Comments</a> --}}
+                                    <div class="row justify-content-start border-1 mb-3">
+                                        <div class= "col-md-2 text-bold ">Assigned to </div>
+                                        <div class= "col-md-1 justify-content-center">:</div>
+                                        <div class= "col-md-3 text-start">
+                                            @if ($ticket->assigned_id != null)
+                                                {{ $ticket->agent->name }}
+                                            @else
+                                                no agent
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe src="{{ asset('storage/upload_file/'.$ticket->file) }}" frameborder="0" class="embed-responsive-item"></iframe>
                                     </div>
                                 </div>
 

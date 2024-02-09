@@ -18,11 +18,11 @@ use App\Http\Controllers\CommentController;
 |
 */
 
-Route::get('/', [UserController::class,'index'])->middleware('auth');
+Route::get('/', [TicketController::class,'index'])->name('root')->middleware('auth');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('user', UserController::class);
 
@@ -31,3 +31,4 @@ Route::resource('category', CategoryController::class);
 Route::resource('ticket', TicketController::class);
 
 Route::post('comment', [CommentController::class,'store'])->name('comment.store');
+Route::delete('{ticket_id}/comment/{id}', [CommentController::class,'destroy'])->name('comment.destroy');

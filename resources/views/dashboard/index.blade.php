@@ -26,6 +26,7 @@
     <!-- summernote -->
     <link rel="stylesheet" href={{ asset( "plugins/summernote/summernote-bs4.min.css")}}>
 
+   
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -94,85 +95,109 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-            <li class="nav-item">
-                <a href="{{ route('user.create') }}" class="nav-link">
-                    <i class="nav-icon fas fa-plus">   </i>
-                    Add new User
-                </a>
-                {{-- <span class="right badge badge-danger">New</span> --}}
-            </li>
+            {{-- permission different on role --}}
+            @if(Auth::user()->role == 2)
+                {{-- user menu  --}}
+                <li class="nav-item">
+                    <a href="{{ route('user.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus">   </i>
+                        Add new User
+                    </a>
+                    {{-- <span class="right badge badge-danger">New</span> --}}
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ route('user.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Users List
-                    </p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ route('user.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Users List
+                        </p>
+                    </a>
+                </li>
 
-            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+                <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
 
-            {{-- category menu  --}}
-            <li class="nav-item">
-                <a href="{{ route('category.create') }}" class="nav-link">
-                    <i class="nav-icon fas fa-plus">   </i>
-                    Add new Category
-                </a>
-                {{-- <span class="right badge badge-danger">New</span> --}}
-            </li>
+                {{-- category menu  --}}
+                <li class="nav-item">
+                    <a href="{{ route('category.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus">   </i>
+                        Add new Category
+                    </a>
+                    {{-- <span class="right badge badge-danger">New</span> --}}
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ route('category.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Categories List
-                    </p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ route('category.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Categories List
+                        </p>
+                    </a>
+                </li>
 
-            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+                <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
 
-            {{-- label menu  --}}
-            <li class="nav-item">
-                <a href="{{ route('label.create') }}" class="nav-link">
-                    <i class="nav-icon fas fa-plus">   </i>
-                    Add new label
-                </a>
-                {{-- <span class="right badge badge-danger">New</span> --}}
-            </li>
+                {{-- label menu  --}}
+                <li class="nav-item">
+                    <a href="{{ route('label.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus">   </i>
+                        Add new label
+                    </a>
+                    {{-- <span class="right badge badge-danger">New</span> --}}
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ route('label.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Labels List
-                    </p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ route('label.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Labels List
+                        </p>
+                    </a>
+                </li>
 
-            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+                <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
 
-            {{-- ticket menu  --}}
-            <li class="nav-item">
-                <a href="{{ route('ticket.create') }}" class="nav-link">
-                    <i class="nav-icon fas fa-plus">   </i>
-                    Add new Ticket
-                </a>
-                {{-- <span class="right badge badge-danger">New</span> --}}
-            </li>
+                {{-- ticket menu  --}}
+                <li class="nav-item">
+                    <a href="{{ route('ticket.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus">   </i>
+                        Add new Ticket
+                    </a>
+                    {{-- <span class="right badge badge-danger">New</span> --}}
+                </li>
 
-            <li class="nav-item">
-                <a href="{{ route('ticket.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Tickets List
-                    </p>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ route('ticket.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Tickets List
+                        </p>
+                    </a>
+                </li>
 
-            <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+                <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
 
+            @else
+                {{-- ticket menu  --}}
+                <li class="nav-item">
+                    <a href="{{ route('ticket.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus">   </i>
+                        Add new Ticket
+                    </a>
+                    {{-- <span class="right badge badge-danger">New</span> --}}
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('ticket.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Tickets List
+                        </p>
+                    </a>
+                </li>
+
+                <div style="border-top: 1px solid #fff;" class="mb-3 mt-2"></div>
+            @endif
 
         </ul>
       </nav>
