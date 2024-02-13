@@ -54,13 +54,18 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="{{ route('ticket.edit', $ticket->id) }}"><i class="fa fa-pen"></i> Edit</a>
-                                                <a class="dropdown-item" href="{{ route('ticket.show', $ticket->id) }}"><i class="fa fa-comment-dots"></i> Comment</a>
-                                                <form action="{{ route('ticket.destroy',$ticket->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="dropdown-item"><i class="fa fa-trash me-3"></i> DELETE</button>
-                                                </form>
+                                                @if (Auth::user()->role == 2)
+                                                    <a class="dropdown-item text-warning" href="{{ route('ticket.edit', $ticket->id) }}"><i class="fa fa-pen"></i> Edit</a>
+                                                    <form action="{{ route('ticket.destroy',$ticket->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="dropdown-item text-danger"><i class="fa fa-trash me-3"></i> DELETE</button>
+                                                    </form>
+                                                @elseif (Auth::user()->role == 1)
+                                                    <a class="dropdown-item text-warning" href="{{ route('ticket.edit', $ticket->id) }}"><i class="fa fa-pen"></i> Edit</a>
+                                                @endif
+
+                                                <a class="dropdown-item text-primary" href="{{ route('ticket.show', $ticket->id) }}"><i class="fa fa-comment-dots"></i> Comment</a>
                                             </div>
                                         </div>
                                     </div>
